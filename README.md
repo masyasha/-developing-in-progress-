@@ -1,2 +1,2 @@
-# *developing in progress*
-*-scrt-*
+# Game for flying
+xxx
