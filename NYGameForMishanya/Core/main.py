@@ -1,7 +1,7 @@
 import random
 import pygame
-from pygame import *
-from character import *
+import blocks_fabric
+import character
 from blocks import *
 
 WIN_WIDTH = 1000
@@ -16,35 +16,34 @@ def main():
     pygame.display.set_caption("Happy New Year 2017!")
     bg = Surface((WIN_WIDTH, WIN_HEIGHT))
     bg.fill(Color(BACKGROUND_COLOR))
-    hero = Character()
+    bg = image.load("../Sources/bg_books.jpg")
+
+    pic = pygame.image.load("../Sources/bg_books.jpg")
+    screen.blit(pygame.transform.scale(pic, (500, 500)), (0, 0))
+
+    hero = character.Character()
     left = right = up = down = False
+    block_counter = 0
     timer = pygame.time.Clock()
     objects = pygame.sprite.Group()
     platforms = []
+    borders = []
     objects.add(hero)
 
-    def generate_blocks():
-        ran_x = random.randint(0, WIN_WIDTH)
-        ran_y = random.randint(0, WIN_HEIGHT)
-        platform = Platform(ran_x, ran_y)
-        objects.add(platform)
-        platforms.append(platform)
-
-    generate_blocks()
     y = x = 0
     for i in range(int(WIN_HEIGHT / BLOCK_HEIGHT)+1):
         left_border = Platform(-BLOCK_WIDTH, y)
         right_border = Platform(WIN_WIDTH, y)
         objects.add(left_border, right_border)
-        platforms.append(left_border)
-        platforms.append(right_border)
+        borders.append(left_border)
+        borders.append(right_border)
         y += BLOCK_HEIGHT
     for i in range(int(WIN_WIDTH / BLOCK_WIDTH)+1):
         top_border = Platform(x, -BLOCK_HEIGHT)
         bottom_border = Platform(x, WIN_HEIGHT)
         objects.add(top_border, bottom_border)
-        platforms.append(top_border)
-        platforms.append(bottom_border)
+        borders.append(top_border)
+        borders.append(bottom_border)
         x += BLOCK_WIDTH
 
     while True:
@@ -75,12 +74,18 @@ def main():
         if collision_fact:
             hero.rect.x = hero.startX
             hero.rect.y = hero.startY
-            print "Score: ", hero.score, "\nHp: ", hero.hp
             hero.score -= 50
             hero.hp -= 250
-            print "Score: ", hero.score, "\nHp: ", hero.hp
         objects.draw(screen)
         pygame.display.update()
+        if block_counter % 15 == 0:
+            block = blocks_fabric.block_generate()
+            objects.add(block)
+            platforms.append(block)
+            block_counter = 0
+        for platform in platforms:
+            platform.rect.y += 5
+        block_counter += 1
         timer.tick(60)
 
 

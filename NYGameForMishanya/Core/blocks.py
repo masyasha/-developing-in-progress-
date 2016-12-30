@@ -15,4 +15,3 @@ class Platform(sprite.Sprite):
 
 
 
-

@@ -1,5 +1,8 @@
 from pygame import *
-from main import *
+import main
+
+WIN_WIDTH = 1000
+WIN_HEIGHT = 650
 
 MOVE_SPEED = 5
 CHARACTER_WIDTH = 22
@@ -18,7 +21,7 @@ class Character(sprite.Sprite):
         self.startY = START_Y
         self.image = Surface((CHARACTER_WIDTH, CHARACTER_HEIGHT))
         self.image.fill(Color(CHARACTER_COLOR))
-        self.image = image.load("../Sources/plane.jpg")
+        self.image = image.load("../Sources/plane.png")
         self.rect = Rect(self.startX, self.startY, CHARACTER_WIDTH, CHARACTER_HEIGHT)
         self.hp = 1000
         self.score = 0
